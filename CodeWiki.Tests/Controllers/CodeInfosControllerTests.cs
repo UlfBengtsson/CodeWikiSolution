@@ -1,6 +1,7 @@
 ﻿using CodeWikiWebApplication.Controllers;
 using CodeWikiWebApplication.Models;
 using CodeWikiWebApplication.Models.ViewModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using Xunit;
 
