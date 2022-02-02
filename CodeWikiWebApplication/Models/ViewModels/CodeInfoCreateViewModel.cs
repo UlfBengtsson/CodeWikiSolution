@@ -7,6 +7,7 @@ namespace CodeWikiWebApplication.Models.ViewModels
         [Required]
         [StringLength(100, MinimumLength = 1)]
         public string Code { get; set; }
+
         [Required]
         [StringLength(9000, MinimumLength = 1)]
         public string Explanation { get; set; }

@@ -44,13 +44,13 @@ namespace CodeWikiWebApplication.Models.Services
 
         public List<CodeInfo> Search(string text)
         {
-            var list = _codeInfoRepo.Read();
-            List<CodeInfo> matches = new List<CodeInfo>();
-
             if (string.IsNullOrWhiteSpace(text))
             {
-                return matches;
+                return new List<CodeInfo>();
             }
+
+            var list = _codeInfoRepo.Read();
+            List<CodeInfo> matches = new List<CodeInfo>();
 
             foreach (var item in list)
             {

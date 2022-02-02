@@ -1,14 +1,24 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CodeWikiWebApplication.Models.Services;
+using CodeWikiWebApplication.Models.Entitys;
+using CodeWikiWebApplication.Models.ViewModels;
 
 namespace CodeWikiWebApplication.Controllers
 {
     public class CodeInfosController : Controller
     {
+        private readonly ICodeInfoService _codeInfoService;
+
+        public CodeInfosController()
+        {
+            _codeInfoService = new CodeInfoService();
+        }
+
         // GET: CodeInfosController
         public ActionResult Index()
         {
-            return View();
+            return View(_codeInfoService.GetList());
         }
 
         // GET: CodeInfosController/Details/5
