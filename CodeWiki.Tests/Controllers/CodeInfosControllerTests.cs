@@ -1,9 +1,12 @@
 ﻿using CodeWikiWebApplication.Controllers;
 using CodeWikiWebApplication.Models;
+using CodeWikiWebApplication.Models.Entitys;
+using CodeWikiWebApplication.Models.Repo;
 using CodeWikiWebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace CodeWiki.Tests.Controllers
@@ -11,7 +14,7 @@ namespace CodeWiki.Tests.Controllers
     public class CodeInfosControllerTests
     {
         [Fact]
-        public void Index_StateUnderTest_ExpectedBehavior()
+        public void Index_GetRequest_IndexViewWithListOfCodeInfo()
         {
             // Arrange
             var codeInfosController = new CodeInfosController();
@@ -20,22 +23,38 @@ namespace CodeWiki.Tests.Controllers
             var result = codeInfosController.Index();
 
             // Assert
-            Assert.True(false);
+            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<List<CodeInfo>>(viewResult.Model);
         }
 
         [Fact]
-        public void Details_StateUnderTest_ExpectedBehavior()
+        public void Details_GetRequest_ViewWithCorrectModelData()
         {
             // Arrange
             var codeInfosController = new CodeInfosController();
-            int id = 0;
+            int id = new InMemoryCodeInfoRepo().Create(new CodeInfo() { Code = "ctor", Explanation = "creates constructor" }).Id;
 
             // Act
-            var result = codeInfosController.Details(
-                id);
+            var result = codeInfosController.Details(id);
 
             // Assert
-            Assert.True(false);
+            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            CodeInfo modelResult = Assert.IsType<CodeInfo>(viewResult.Model);
+            Assert.Equal("ctor", modelResult.Code);
+        }
+
+        [Fact]
+        public void Details_NoneExcistingCodeInfoId_RedirectToIndex()
+        {
+            // Arrange
+            var codeInfosController = new CodeInfosController();
+
+            // Act
+            var result = codeInfosController.Details(int.MaxValue);
+
+            // Assert
+            RedirectToActionResult redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
         }
 
         [Fact]
@@ -70,19 +89,19 @@ namespace CodeWiki.Tests.Controllers
             Assert.Equal("ctor", codeInfoCreateVMResult.Code);
         }
 
-        [Fact]
-        public void Create_StateUnderTest_ExpectedBehavior1()
-        {
-            // Arrange
-            var codeInfosController = new CodeInfosController();
-            CodeInfoCreateViewModel createViewModel = null;
+        //[Fact]// If we used Moq or somthing like it we be able to trigger the "storage, failed to save" and test i worked.
+        //public void Create_StateUnderTest_ExpectedBehavior1()
+        //{
+        //    // Arrange
+        //    var codeInfosController = new CodeInfosController();
+        //    CodeInfoCreateViewModel createViewModel = null;
 
-            // Act
-            var result = codeInfosController.Create();
+        //    // Act
+        //    var result = codeInfosController.Create();
 
-            // Assert
-            Assert.True(false);
-        }
+        //    // Assert
+        //    Assert.True(false);
+        //}
 
         [Fact]
         public void Edit_StateUnderTest_ExpectedBehavior()
