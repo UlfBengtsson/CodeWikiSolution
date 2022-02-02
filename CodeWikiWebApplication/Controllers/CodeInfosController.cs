@@ -21,12 +21,6 @@ namespace CodeWikiWebApplication.Controllers
             return View(_codeInfoService.GetList());
         }
 
-        // GET: CodeInfosController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: CodeInfosController/Create
         [HttpGet]
         public ActionResult Create()
@@ -37,14 +31,34 @@ namespace CodeWikiWebApplication.Controllers
         // POST: CodeInfosController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CodeInfoCreateViewModel createViewModel)
         {
+            if (ModelState.IsValid)
+            {
+                CodeInfo codeInfo = _codeInfoService.Add(createViewModel);
+
+                if (codeInfo != null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ModelState.AddModelError("Storage", "Failed to save");
+            }     
             
-            return RedirectToAction(nameof(Index));
-            
-            
-            return View();
-            
+            return View(createViewModel);        
+        }
+
+        // GET: CodeInfosController/Details/5
+        public ActionResult Details(int id)
+        {
+            CodeInfo codeInfo = _codeInfoService.GetById(id);
+
+            if (codeInfo == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(codeInfo);
         }
 
         // GET: CodeInfosController/Edit/5

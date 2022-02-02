@@ -1,0 +1,9 @@
+﻿@model CodeInfo
+
+<div class="col-6">
+    <p>@Model.Code</p>
+</div>
+
+<div class="col-6">
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">Details</a>
+</div>

@@ -1,8 +1,32 @@
 ﻿@model List<CodeInfo>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Code info list";
     //ViewBag.Title = "Index";
 }
 
-<h1>Index</h1>
+<h1>Code info list</h1>
 
+<hr />
+
+@Html.ActionLink("Create", "Create", "CodeInfos")
+
+<div class="row">
+
+    <div class="col-6">
+        <h5>Code</h5>
+    </div>
+
+    <div class="col-6">
+        
+    </div>
+
+</div>
+<div class="row">
+
+    @foreach (CodeInfo item in Model)
+    {
+        <partial name="_shortCodeInfo" model="item" />
+    }
+
+
+</div>

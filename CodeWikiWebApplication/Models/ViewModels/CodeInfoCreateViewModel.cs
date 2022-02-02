@@ -12,6 +12,8 @@ namespace CodeWikiWebApplication.Models.ViewModels
         [StringLength(9000, MinimumLength = 1)]
         public string Explanation { get; set; }
 
+        public CodeInfoCreateViewModel() {}
+
         public CodeInfoCreateViewModel(string code, string explanation)
         {
             Code = code;
