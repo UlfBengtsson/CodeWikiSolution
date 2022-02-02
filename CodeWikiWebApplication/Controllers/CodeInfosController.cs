@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CodeWikiWebApplication.Models.Services;
 using CodeWikiWebApplication.Models.Entitys;
 using CodeWikiWebApplication.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace CodeWikiWebApplication.Controllers
 {
@@ -39,7 +40,7 @@ namespace CodeWikiWebApplication.Controllers
 
                 if (codeInfo != null)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index),"CodeInfos");
                 }
 
                 ModelState.AddModelError("Storage", "Failed to save");
@@ -95,6 +96,24 @@ namespace CodeWikiWebApplication.Controllers
 
 
             return View();
+        }
+
+        //PartcialView Actions
+        [HttpGet]
+        public IActionResult Last()
+        {
+            List<CodeInfo> infos = _codeInfoService.GetList();
+            CodeInfo lastInfo = new CodeInfo();
+
+            foreach (CodeInfo item in infos)
+            {
+                if (item.Id > lastInfo.Id)
+                {
+                    lastInfo = item;
+                }
+            }
+
+            return PartialView("_shortCodeInfo", lastInfo);
         }
     }
 }

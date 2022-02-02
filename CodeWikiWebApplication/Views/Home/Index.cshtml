@@ -1,9 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+   
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>This project was created using the ASP.NET Core 3.1 Template called "ASP.NET Core Web App(Model-View-Controller)" as it´s base</p>
-    
+     
 </div>
+
+<button onclick="getLastCodeInfo()">Get last added Code info</button>
+<div id="lastCodeInfo" class="row"></div>

@@ -2,6 +2,7 @@
 using CodeWikiWebApplication.Models;
 using CodeWikiWebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
 
@@ -38,16 +39,35 @@ namespace CodeWiki.Tests.Controllers
         }
 
         [Fact]
-        public void Create_StateUnderTest_ExpectedBehavior()
+        public void Create_ValidPost_RedirectToIndex()
         {
             // Arrange
             var codeInfosController = new CodeInfosController();
+            CodeInfoCreateViewModel createViewModel = new CodeInfoCreateViewModel("ctor", "cunstructor");
 
             // Act
-            var result = codeInfosController.Create();
+            var result = codeInfosController.Create(createViewModel);
 
             // Assert
-            Assert.True(false);
+            RedirectToActionResult redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+            Assert.Equal("CodeInfos", redirectResult.ControllerName);
+        }
+
+        [Fact]
+        public void Create_InvalidModelState_ReturnToViewWithModelStateErrors()
+        {
+            // Arrange
+            var codeInfosController = new CodeInfosController();
+            CodeInfoCreateViewModel createViewModel = new CodeInfoCreateViewModel("ctor", "");
+
+            // Act
+            var result = codeInfosController.Create(createViewModel);
+
+            // Assert
+            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            CodeInfoCreateViewModel codeInfoCreateVMResult = Assert.IsType<CodeInfoCreateViewModel>(viewResult.Model);
+            Assert.Equal("ctor", codeInfoCreateVMResult.Code);
         }
 
         [Fact]
@@ -55,11 +75,10 @@ namespace CodeWiki.Tests.Controllers
         {
             // Arrange
             var codeInfosController = new CodeInfosController();
-            IFormCollection collection = null;
+            CodeInfoCreateViewModel createViewModel = null;
 
             // Act
-            var result = codeInfosController.Create(
-                collection);
+            var result = codeInfosController.Create();
 
             // Assert
             Assert.True(false);
