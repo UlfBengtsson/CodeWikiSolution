@@ -1,0 +1,56 @@
+﻿@model IndexWithCreateViewModel
+@{
+    ViewData["Title"] = "IndexWithCreate";
+}
+
+<h1>IndexWithCreate</h1>
+
+<hr />  
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="IndexWithCreate" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CreateViewModel.Code" class="control-label"></label>
+                <input asp-for="CreateViewModel.Code" class="form-control" />
+                <span asp-validation-for="CreateViewModel.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateViewModel.Explanation" class="control-label"></label>
+                <input asp-for="CreateViewModel.Explanation" class="form-control" />
+                <span asp-validation-for="CreateViewModel.Explanation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />  
+
+<h1>Code info list</h1>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-6">
+        <h5>Code</h5>
+    </div>
+
+    <div class="col-6">
+        
+    </div>
+
+</div>
+<div class="row">
+
+    @foreach (CodeInfo item in Model.TheList)
+    {
+        <partial name="_shortCodeInfo" model="item" />
+    }
+
+
+</div>

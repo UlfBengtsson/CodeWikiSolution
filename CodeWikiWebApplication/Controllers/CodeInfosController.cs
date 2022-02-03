@@ -16,6 +16,37 @@ namespace CodeWikiWebApplication.Controllers
             _codeInfoService = new CodeInfoService();
         }
 
+        [HttpGet]
+        public IActionResult IndexWithCreate()
+        {
+            IndexWithCreateViewModel model = new IndexWithCreateViewModel();
+
+            model.TheList = _codeInfoService.GetList();
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IndexWithCreate(CodeInfoCreateViewModel createViewModel)//just want the create part so no need to send the other date from the page
+        {
+            if (ModelState.IsValid)
+            {
+                CodeInfo codeInfo = _codeInfoService.Add(createViewModel);
+
+                if (codeInfo == null)
+                {
+                    ModelState.AddModelError("Storage", "Failed to save");
+                }
+            }
+            IndexWithCreateViewModel model = new IndexWithCreateViewModel();
+
+            model.CreateViewModel = createViewModel;
+            model.TheList = _codeInfoService.GetList();
+
+            return View(model);
+        }
+
+
         // GET: CodeInfosController
         public ActionResult Index()
         {
